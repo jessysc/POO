@@ -12,7 +12,7 @@ import sistemaEscolar.Model.Aluno;
 /**
  * Classe responsável pelas operações CRUD de alunos no banco de dados.
 */
-public class AlunoDAO implements DAO<Aluno>, NotasDAO
+public class AlunoDAO implements DAO<Aluno>
 { 
     /**
      * Método responsável por persistir um aluno no banco de dados.
@@ -28,8 +28,13 @@ public class AlunoDAO implements DAO<Aluno>, NotasDAO
         String nome = obj.getNome();
         System.out.println(nome);
         String email = obj.getEmail();
+        double nota1 = obj.getN1();
+        double nota2 = obj.getN2();
+        double nota3 = obj.getPrj();
+        double notaFinal = obj.getNotaFinal();
+        
         Date dataNascimento = Date.from(obj.getDataNascimento().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        String sql = "INSERT INTO aluno VALUES('"+nome+"','"+dataNascimento+"','"+email+"','"+usuario+"','"+senha+"',"+obj.getNota()+")";
+        String sql = "INSERT INTO aluno VALUES('"+nome+"','"+dataNascimento+"','"+email+"','"+usuario+"','"+senha+"', '"+nota1+"', '"+nota2+"', '"+nota3+"',"+notaFinal+")";
         return Conexao.update(sql);
     }
 
@@ -58,26 +63,20 @@ public class AlunoDAO implements DAO<Aluno>, NotasDAO
         String nome = obj.getNome();
         String usuario = obj.getUsuario();
         String senha = obj.getSenha();
+        double nota1 = obj.getN1();
+        double nota2 = obj.getN2();
+        double nota3 = obj.getPrj();
+        double notaFinal = obj.getNotaFinal();
        
-        String sql = "UPDATE aluno SET nome='"+nome+"', usuario='"+usuario+"', senha='"+senha+"' WHERE email='"+obj.getEmail()+"'";
+        String sql = "UPDATE aluno SET nome='"+nome+"', usuario='"+usuario+"', senha='"+senha+"', nota1='"+nota1+"', nota2='"+nota2+"', nota3='"+nota3+"',notaFinal='"+notaFinal+"' WHERE email='"+obj.getEmail()+"'";
         return Conexao.update(sql);
     }
     
-    /**
-     * Método responsável por atualizar a pontuação do aluno passado por parâmetro no banco de dados.
-     * @param obj
-     * @return valor booleano indicando se a atualização foi feita com sucesso.
-     */
-    @Override
-    public boolean updateNota(Aluno obj)
-    {
-        String sql = "UPDATE aluno SET nota="+obj.getNota()+" WHERE EMAIL='"+obj.getEmail()+"'";
-        return Conexao.update(sql);
-    }
+   
 
     /**
      * Método responsável por listar todos os alunos persistidos no banco de dados.
-     * @return ArrayList contendo todos os administradores cadastrados.
+     * @return ArrayList contendo todos os alunos cadastrados.
      */
     
     @Override
@@ -96,8 +95,11 @@ public class AlunoDAO implements DAO<Aluno>, NotasDAO
                 String email = rs.getString("email");
                 String usuario = rs.getString("usuario");
                 String senha = rs.getString("senha");
-                int nota = rs.getInt("nota");
-                Aluno j = new Aluno(nome,dataNascimento,email,usuario,senha,nota);
+                double nota1 = rs.getDouble("nota1");
+                double nota2 = rs.getDouble("nota2");
+                double nota3 = rs.getDouble("nota3");
+                double notaFinal = rs.getDouble("notaFinal");
+                Aluno j = new Aluno(nome,dataNascimento,email,usuario,senha, nota1, nota2, nota3, notaFinal);
                 alunos.add(j);
             }
             return alunos;
