@@ -1,20 +1,22 @@
 package sistemaEscolar.View;
 
+import static java.lang.Double.parseDouble;
 import java.time.format.DateTimeFormatter;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import sistemaEscolar.Control.ControlMain;
 import sistemaEscolar.Control.Pesquisavel;
+import sistemaEscolar.DAO.AlunoDAO;
 import sistemaEscolar.Model.Administrador;
 import sistemaEscolar.Model.Aluno;
 import sistemaEscolar.Model.Professor;
 
-public class FrmCrudUserAl extends javax.swing.JFrame {
-    
+public class FrmCrudUserAl extends javax.swing.JFrame{
     private Professor prof;   
-    private Aluno selectedAln;
+    private Aluno selectedAln;    
     private Administrador admin;
-
+    AlunoDAO crud;
+    Aluno aluno;
     /**
      * Construtor para inicializar crud disponivel para usuário professor
      * @param prof 
@@ -49,7 +51,7 @@ public class FrmCrudUserAl extends javax.swing.JFrame {
         txtEmail.setText("");
         txtDataNascimento.setText("");
         txtUsuario.setText("");
-        txtScore.setText("");
+        
     }
     
    /**
@@ -83,13 +85,19 @@ public class FrmCrudUserAl extends javax.swing.JFrame {
     private void defaultAcessButtons()
     {
         btnRemoveAluno.setEnabled(false);
+        textP1.setEnabled(false);
+        textP2.setEnabled(false);
+        textPr.setEnabled(false);
+        
     }
+    
     private void admAcessButtons(){
         btnAddNota.setEnabled(false);
+        btnSalvar.setEnabled(false);
     }
     
     /**
-     * Método para selecionar aluno da lista de professores
+     * Método para selecionar aluno da lista de alunos
      * @return 
      */
     private Aluno getSelectedAln()
@@ -107,7 +115,7 @@ public class FrmCrudUserAl extends javax.swing.JFrame {
         return prof.removeUser(ControlMain.getControlAluno(), selectedAln);
     }
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
         btnBack = new javax.swing.JButton();
@@ -124,11 +132,17 @@ public class FrmCrudUserAl extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         txtEmail = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        txtScore = new javax.swing.JFormattedTextField();
+        textP2 = new javax.swing.JTextField();
+        textP1 = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        textPr = new javax.swing.JTextField();
         btnRemoveAluno = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnAddNota = new javax.swing.JButton();
+        btnSalvar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -193,9 +207,28 @@ public class FrmCrudUserAl extends javax.swing.JFrame {
         txtEmail.setEnabled(false);
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel7.setText("Nota:");
+        jLabel7.setText("Notas:");
 
-        txtScore.setEnabled(false);
+        textP2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textP2ActionPerformed(evt);
+            }
+        });
+
+        textP1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textP1ActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jLabel6.setText("Prova 1:");
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jLabel8.setText("Prova 2:");
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jLabel9.setText("Projeto:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -204,7 +237,6 @@ public class FrmCrudUserAl extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtDataNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
@@ -215,13 +247,30 @@ public class FrmCrudUserAl extends javax.swing.JFrame {
                             .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
                             .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3)
                             .addComponent(jLabel4))
+                        .addGap(10, 10, 10)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(textP1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(txtDataNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
-                            .addComponent(txtScore))))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(textP2, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(textPr, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -230,28 +279,37 @@ public class FrmCrudUserAl extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(2, 2, 2)
-                                .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(2, 2, 2)
-                                .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel3)
+                        .addComponent(jLabel2)
                         .addGap(2, 2, 2)
-                        .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
+                        .addComponent(jLabel5)
                         .addGap(2, 2, 2)
-                        .addComponent(txtScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel7))
                 .addGap(2, 2, 2)
-                .addComponent(txtDataNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textP1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(2, 2, 2)
+                        .addComponent(txtDataNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel8)
+                            .addComponent(textP2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(textPr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         btnRemoveAluno.setText("Excluir Aluno");
@@ -290,6 +348,13 @@ public class FrmCrudUserAl extends javax.swing.JFrame {
             }
         });
 
+        btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -299,13 +364,15 @@ public class FrmCrudUserAl extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnRemoveAluno, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnAddNota, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnRemoveAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAddNota)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -319,20 +386,21 @@ public class FrmCrudUserAl extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRemoveAluno)
                     .addComponent(btnBack)
-                    .addComponent(btnAddNota))
+                    .addComponent(btnAddNota)
+                    .addComponent(btnSalvar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>                        
 
-    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {                                        
         this.dispose();
-    }//GEN-LAST:event_btnBackActionPerformed
+    }                                       
 
-    private void listUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listUserMouseClicked
+    private void listUserMouseClicked(java.awt.event.MouseEvent evt) {                                      
         Aluno a = getSelectedAln();
         selectedAln = a;
         if(selectedAln != null)
@@ -340,13 +408,13 @@ public class FrmCrudUserAl extends javax.swing.JFrame {
             btnRemoveAluno.setEnabled(true);
             fill_form();
         }
-    }//GEN-LAST:event_listUserMouseClicked
+    }                                     
 
-    private void txtNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeActionPerformed
+    private void txtNomeActionPerformed(java.awt.event.ActionEvent evt) {                                        
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtNomeActionPerformed
+    }                                       
 
-    private void btnRemoveAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveAlunoActionPerformed
+    private void btnRemoveAlunoActionPerformed(java.awt.event.ActionEvent evt) {                                               
         if (JOptionPane.showConfirmDialog(null, "Tem certeza que deseja remover o aluno '"+selectedAln.getUsuario()+"'?", "WARNING",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
         {
             if(removeAluno())
@@ -362,34 +430,89 @@ public class FrmCrudUserAl extends javax.swing.JFrame {
             }
         }
 
-    }//GEN-LAST:event_btnRemoveAlunoActionPerformed
-
-    private void btnAddNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddNotaActionPerformed
+    }                                              
+      
+    private void addNotaAcessButton()
+    {
+        btnAddNota.setEnabled(false);
+        btnRemoveAluno.setEnabled(false);
+        btnSalvar.setEnabled(true);
+        textP1.setEnabled(true);
+        textP2.setEnabled(true);
+        textPr.setEnabled(true);
         
-    }//GEN-LAST:event_btnAddNotaActionPerformed
+    }
+    //Método para adicionar notas dos alunos
+    private boolean adcNotas()
+    {        
+        selectedAln.setN1(parseDouble(textP1.getText()));
+        selectedAln.setN2(parseDouble(textP2.getText()));
+        selectedAln.setN3(parseDouble(textPr.getText()));
+        double n1 = (parseDouble(textP1.getText())), 
+               n2 = (parseDouble(textP2.getText())), 
+               n3 = (parseDouble(textPr.getText())), 
+               nF = n1+n2+n3;
+        selectedAln.setNotaFinal(nF);
+        return aluno.notas(ControlMain.getControlAluno(), selectedAln);
+                
+    }
+    
+    private void btnAddNotaActionPerformed(java.awt.event.ActionEvent evt) {                                           
+        addNotaAcessButton();
+        JOptionPane.showMessageDialog(this, "Adicione as notas nos campos acima e depois clique em 'Salvar'!");        
+        textP1.setFocusable(true);
+        textP2.setFocusable(true);
+        textPr.setFocusable(true);
+    }                                          
+
+    private void textP1ActionPerformed(java.awt.event.ActionEvent evt) {                                       
+        // TODO add your handling code here:
+    }                                      
+
+    private void textP2ActionPerformed(java.awt.event.ActionEvent evt) {                                       
+        // TODO add your handling code here:
+    }                                      
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {                                          
+        if(adcNotas())
+        {
+            JOptionPane.showMessageDialog(this, "A senha foi alterada com sucesso!");
+            defaultAcessButtons();
+            textP1.setFocusable(false);
+            textP2.setFocusable(false);
+            textPr.setFocusable(false);
+        }
+        else JOptionPane.showMessageDialog(this, "Erro!");
+    }                                         
 
     
 
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // Variables declaration - do not modify                     
     private javax.swing.JButton btnAddNota;
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnRemoveAluno;
+    private javax.swing.JButton btnSalvar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList listUser;
+    private javax.swing.JTextField textP1;
+    private javax.swing.JTextField textP2;
+    private javax.swing.JTextField textPr;
     private javax.swing.JTextField txtDataNascimento;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtNome;
-    private javax.swing.JFormattedTextField txtScore;
     private javax.swing.JTextField txtUsuario;
-    // End of variables declaration//GEN-END:variables
+    // End of variables declaration                   
 }
